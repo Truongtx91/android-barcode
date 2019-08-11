@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 
-import com.xtruong.barcode.R;
 
 import androidx.core.content.ContextCompat;
 

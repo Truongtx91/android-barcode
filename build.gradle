@@ -8,6 +8,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
+        // scan barcode
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -24,4 +25,22 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext{
+    // Sdk and tools
+    minSdkVersion = 16
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
+
+    // App dependencies
+    playServicesVision = '18.0.0'
+    androidXLibariesVersion = '1.0.2'
+    androidMaterialVersion = '1.0.0'
+    androidVolleyVersion = '1.1.0'
+    //Test dependencies
+    junitVersion = '4.12'
+    espressoVersion = '2.2.2'
+    mockitoVersion = '2.7.1'
 }
