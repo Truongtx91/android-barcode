@@ -205,7 +205,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
 
         };
         // Adding request to request queue
-        ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
+        //ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     private void resendCode(final String email) {
@@ -272,7 +272,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
 
         };
         // Adding request to request queue
-        ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
+        //ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     private void showDialog() {

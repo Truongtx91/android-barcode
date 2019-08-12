@@ -89,7 +89,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -114,7 +114,6 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$rootProject.ext.androidXLibariesVersion"
     implementation "com.google.android.material:material:$rootProject.ext.androidMaterialVersion"
-    implementation 'com.android.support:support-v4:27.0.0'
     // scan bar code
     implementation "com.google.android.gms:play-services-vision:$rootProject.playServicesVision"
 
@@ -123,8 +122,12 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
 
     // UI Testing
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0-alpha02'
+
+    // reactive
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
 
 
 }

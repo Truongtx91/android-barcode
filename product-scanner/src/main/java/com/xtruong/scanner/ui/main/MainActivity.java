@@ -1,6 +1,7 @@
 package com.xtruong.scanner.ui.main;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +46,11 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    public static Intent getStartIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return intent;
+    }
 
     private TextView txtName, txtEmail;
     private MaterialButton btnChangePass, btnLogout;
@@ -260,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         // Adding request to volley request queue
         strReq.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
         strReq.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
-        ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
+        //ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     private void showDialog() {

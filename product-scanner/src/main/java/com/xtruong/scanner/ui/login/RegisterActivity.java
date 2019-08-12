@@ -1,6 +1,7 @@
 package com.xtruong.scanner.ui.login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,8 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
+
+
 
     private MaterialButton btnRegister, btnLinkToLogin;
     private TextInputLayout inputName, inputEmail, inputPassword;
@@ -161,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
         };
 
         // Adding request to request queue
-        ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
+        //ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     private void showDialog() {
