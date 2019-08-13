@@ -1,7 +1,6 @@
 package com.xtruong.scanner.ui.login;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -20,7 +19,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.xtruong.scanner.R;
 import com.xtruong.scanner.data.DatabaseHandler;
 import com.xtruong.scanner.data.SessionManager;
-import com.xtruong.scanner.ui.codereader.BarcodeActivity;
 import com.xtruong.scanner.utils.AppConfig;
 import com.xtruong.scanner.utils.Functions;
 
@@ -157,10 +155,10 @@ public class EmailVerifyActivity extends AppCompatActivity {
                         logout.logoutUser(getApplicationContext());
                         db.addUser(json_user.getString(KEY_UID), json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json_user.getString(KEY_CREATED_AT));
                         session.setLogin(true);
-                        Intent upanel = new Intent(EmailVerifyActivity.this, BarcodeActivity.class);
-                        upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(upanel);
-                        finish();
+//                        Intent upanel = new Intent(EmailVerifyActivity.this, BarcodeActivity.class);
+//                        upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(upanel);
+//                        finish();
 
                     } else {
                         Toast.makeText(getApplicationContext(), "Invalid Verification Code", Toast.LENGTH_LONG).show();

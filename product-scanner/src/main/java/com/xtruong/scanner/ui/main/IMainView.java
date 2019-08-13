@@ -26,4 +26,10 @@ public interface IMainView extends IView {
     void lockDrawer();
 
     void unlockDrawer();
+
+    void showRateUsDialog();
+
+    void openPaymentActivity();
+
+    void showChangePasswordDialog();
 }

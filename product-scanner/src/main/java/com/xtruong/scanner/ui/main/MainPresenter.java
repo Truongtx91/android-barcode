@@ -27,9 +27,15 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
-    public void onDrawerOptionAboutClick() {
+    public void onDrawerPaymentClick(){
         getMvpView().closeNavigationDrawer();
-        getMvpView().showAboutFragment();
+        getMvpView().openPaymentActivity();
+    }
+
+    @Override
+    public void onDrawerChangePasswordClick(){
+        getMvpView().closeNavigationDrawer();
+        getMvpView().showChangePasswordDialog();
     }
 
     @Override
@@ -66,6 +72,19 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         }
                     }
                 }));
+    }
+
+    @Override
+    public void onDrawerRateUsClick(){
+
+        getMvpView().closeNavigationDrawer();
+        getMvpView().showRateUsDialog();
+    }
+
+    @Override
+    public void onDrawerOptionAboutClick() {
+        getMvpView().closeNavigationDrawer();
+        getMvpView().showAboutFragment();
     }
 
     @Override

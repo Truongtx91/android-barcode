@@ -16,6 +16,9 @@ import com.xtruong.scanner.R;
 import com.xtruong.scanner.ui.about.AboutFragment;
 import com.xtruong.scanner.ui.base.BaseActivity;
 import com.xtruong.scanner.ui.login.LoginActivity;
+import com.xtruong.scanner.ui.main.password.PasswordDialog;
+import com.xtruong.scanner.ui.main.rating.RatingDialog;
+import com.xtruong.scanner.ui.payment.PaymentActivity;
 
 import javax.inject.Inject;
 
@@ -250,6 +253,15 @@ public class MainActivity extends BaseActivity implements  IMainView {
                         mDrawer.closeDrawer(GravityCompat.START);
 
                         switch (item.getItemId()) {
+                            case R.id.nav_item_payment:
+                                mPresenter.onDrawerPaymentClick();
+                                return true;
+                            case R.id.nav_item_change_password:
+                                mPresenter.onDrawerChangePasswordClick();
+                                return true;
+                            case R.id.nav_item_rate_us:
+                                mPresenter.onDrawerRateUsClick();
+                                return true;
                             case R.id.nav_item_about:
                                 mPresenter.onDrawerOptionAboutClick();
                                 return true;
@@ -277,5 +289,18 @@ public class MainActivity extends BaseActivity implements  IMainView {
         }
     }
 
+    @Override
+    public void showRateUsDialog() {
+        RatingDialog.newInstance().show(getSupportFragmentManager());
+    }
 
+    @Override
+    public void openPaymentActivity(){
+        startActivity(PaymentActivity.getStartIntent(this));
+    }
+
+    @Override
+    public void showChangePasswordDialog(){
+        PasswordDialog.newInstance().show(getSupportFragmentManager());
+    }
 }

@@ -122,7 +122,7 @@
                 android:id="@+id/btnForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/forgotpassword"
+                android:text="@string/forgot_password"
                 android:background="@color/transparent"
                 android:textColor="@color/colorPrimary"
                 android:textAllCaps="false"
