@@ -1,281 +1,281 @@
 package com.xtruong.scanner.ui.main;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
-import com.xtruong.scanner.ScannerApp;
+import com.google.android.material.navigation.NavigationView;
+import com.xtruong.scanner.BuildConfig;
 import com.xtruong.scanner.R;
-import com.xtruong.scanner.data.DatabaseHandler;
-import com.xtruong.scanner.data.SessionManager;
+import com.xtruong.scanner.ui.about.AboutFragment;
+import com.xtruong.scanner.ui.base.BaseActivity;
 import com.xtruong.scanner.ui.login.LoginActivity;
-import com.xtruong.scanner.utils.AppConfig;
-import com.xtruong.scanner.utils.Functions;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.inject.Inject;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by truongtx on 8/10/2019
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements  IMainView {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    @Inject
+    IMainPresenter<IMainView> mPresenter;
 
-    public static Intent getStartIntent(Context context) {
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @BindView(R.id.tv_app_version)
+    TextView mAppVersionTextView;
+
+    @BindView(R.id.drawer_view)
+    DrawerLayout mDrawer;
+
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
+
+
+    private TextView mNameTextView;
+
+    private TextView mEmailTextView;
+
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    private RoundedImageView mProfileImageView;
+
+    public static Intent getStartIntent(Context context){
         Intent intent = new Intent(context, MainActivity.class);
         return intent;
     }
 
-    private TextView txtName, txtEmail;
-    private MaterialButton btnChangePass, btnLogout;
-    private SessionManager session;
-    private DatabaseHandler db;
-
-    private ProgressDialog pDialog;
-    private HashMap<String,String> user = new HashMap<>();
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        txtName = findViewById(R.id.name);
-        txtEmail = findViewById(R.id.email);
-        btnChangePass = findViewById(R.id.change_password);
-        btnLogout = findViewById(R.id.logout);
+        getActivityComponent().inject(this);
 
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
+        setUnBinder(ButterKnife.bind(this));
 
-        db = new DatabaseHandler(getApplicationContext());
-        user = db.getUserDetails();
+        mPresenter.onAttach(this);
 
-        // session manager
-        session = new SessionManager(getApplicationContext());
+        setUp();
 
-        if (!session.isLoggedIn()) {
-            logoutUser();
-        }
-
-        // Fetching user details from database
-        String name = user.get("name");
-        String email = user.get("email");
-
-        // Displaying the user details on the screen
-        txtName.setText(name);
-        txtEmail.setText(email);
-
-        // Hide Keyboard
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        init();
     }
 
-    private void init() {
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(AboutFragment.TAG);
+        if (fragment == null) {
+            super.onBackPressed();
+        } else {
+            onFragmentDetached(AboutFragment.TAG);
+        }
+    }
+
+    @Override
+    public void updateAppVersion() {
+        String version = "version" + " " + BuildConfig.VERSION_NAME;
+        mAppVersionTextView.setText(version);
+    }
+
+    @Override
+    public void showAboutFragment() {
+        lockDrawer();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                .add(R.id.cl_root_view, AboutFragment.newInstance(), AboutFragment.TAG)
+                .commit();
+    }
+
+    @Override
+    public void showBarcodeFragment() {
+
+    }
+
+    @Override
+    public void updateUserName(String currentUserName) {
+        mNameTextView.setText(currentUserName);
+    }
+
+    @Override
+    public void updateUserEmail(String currentUserEmail) {
+        mEmailTextView.setText(currentUserEmail);
+    }
+
+    @Override
+    public void updateUserProfilePic(String currentUserProfilePicUrl) {
+        //load profile pic url into ANImageView
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mDrawer != null)
+            mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.onDetach();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onFragmentAttached() {
+    }
+
+    @Override
+    public void onFragmentDetached(String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                    .remove(fragment)
+                    .commitNow();
+            unlockDrawer();
+        }
+    }
+
+    @Override
+    public void unlockDrawer() {
+        if (mDrawer != null)
+            mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    @Override
+    public void lockDrawer() {
+        if (mDrawer != null)
+            mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Drawable drawable = item.getIcon();
+        if (drawable instanceof Animatable) {
+            ((Animatable) drawable).start();
+        }
+        switch (item.getItemId()) {
+            case R.id.action_cut:
+                return true;
+            case R.id.action_copy:
+                return true;
+            case R.id.action_share:
+                return true;
+            case R.id.action_delete:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void setUp() {
+
+        setSupportActionBar(mToolbar);
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawer,
+                mToolbar,
+                R.string.open_drawer,
+                R.string.close_drawer) {
             @Override
-            public void onClick(View v) {
-                logoutUser();
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                hideKeyboard();
             }
-        });
 
-        btnChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.change_password, null);
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
 
-                dialogBuilder.setView(dialogView);
-                dialogBuilder.setTitle("Change Password");
-                dialogBuilder.setCancelable(false);
+        mDrawer.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
-                final TextInputLayout oldPassword = dialogView.findViewById(R.id.old_password);
-                final TextInputLayout newPassword = dialogView.findViewById(R.id.new_password);
+        setupNavMenu();
+        mPresenter.onNavMenuCreated();
 
-                dialogBuilder.setPositiveButton("Change",  new DialogInterface.OnClickListener() {
+        setupBarCodeContainerView();
+
+        mPresenter.onViewInitialized();
+    }
+
+    private void setupBarCodeContainerView() {
+        // TODO
+    }
+
+    private void setupNavMenu() {
+        View headerLayout = mNavigationView.getHeaderView(0);
+
+        mProfileImageView = (RoundedImageView) headerLayout.findViewById(R.id.iv_profile_pic);
+        mNameTextView = (TextView) headerLayout.findViewById(R.id.tv_name);
+        mEmailTextView = (TextView) headerLayout.findViewById(R.id.tv_email);
+
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // empty
-                    }
-                });
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        mDrawer.closeDrawer(GravityCompat.START);
 
-                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                final AlertDialog alertDialog = dialogBuilder.create();
-
-                TextWatcher textWatcher = new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if(oldPassword.getEditText().getText().length() > 0 &&
-                                newPassword.getEditText().getText().length() > 0){
-                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                        } else {
-                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                        switch (item.getItemId()) {
+                            case R.id.nav_item_about:
+                                mPresenter.onDrawerOptionAboutClick();
+                                return true;
+                            case R.id.nav_item_logout:
+                                mPresenter.onDrawerOptionLogoutClick();
+                                return true;
+                            default:
+                                return false;
                         }
                     }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-                };
-
-                oldPassword.getEditText().addTextChangedListener(textWatcher);
-                newPassword.getEditText().addTextChangedListener(textWatcher);
-
-                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(final DialogInterface dialog) {
-                        final Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        b.setEnabled(false);
-
-                        b.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String email = user.get("email");
-                                String old_pass = oldPassword.getEditText().getText().toString();
-                                String new_pass = newPassword.getEditText().getText().toString();
-
-                                if (!old_pass.isEmpty() && !new_pass.isEmpty()) {
-                                    changePassword(email, old_pass, new_pass);
-                                    dialog.dismiss();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Fill all values!", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                        });
-                    }
                 });
-
-                alertDialog.show();
-            }
-        });
     }
 
-    private void logoutUser() {
-        session.setLogin(false);
-        // Launching the login activity
-        Functions logout = new Functions();
-        logout.logoutUser(getApplicationContext());
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
+
+    @Override
+    public void openLoginActivity() {
+        startActivity(LoginActivity.getStartIntent(this));
         finish();
     }
 
-    private void changePassword(final String email, final String old_pass, final String new_pass) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_reset_pass";
-
-        pDialog.setMessage("Please wait...");
-        showDialog();
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.RESET_PASS_URL, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Reset Password Response: " + response);
-                hideDialog();
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-
-                    if (!error) {
-                        Toast.makeText(getApplicationContext(), jObj.getString("message"), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), jObj.getString("message"), Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (JSONException e) {
-                    // JSON error
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Reset Password Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map getParams() {
-                // Posting parameters to login url
-                Map params = new HashMap<>();
-
-                params.put("tag", "change_pass");
-                params.put("email", email);
-                params.put("old_password", old_pass);
-                params.put("password", new_pass);
-
-                return params;
-            }
-
-            @Override
-            public Map getHeaders() throws AuthFailureError {
-                Map params = new HashMap<>();
-                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-
-        };
-
-        // Adding request to volley request queue
-        strReq.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
-        strReq.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
-        //ScannerApp.getInstance().addToRequestQueue(strReq, tag_string_req);
+    @Override
+    public void closeNavigationDrawer() {
+        if (mDrawer != null) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        }
     }
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
 
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
 }

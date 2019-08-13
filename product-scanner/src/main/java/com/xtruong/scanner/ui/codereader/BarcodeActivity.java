@@ -1,4 +1,4 @@
-package com.xtruong.scanner.ui.barcode;
+package com.xtruong.scanner.ui.codereader;
 
 import android.os.Bundle;
 import android.util.Log;

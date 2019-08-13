@@ -1,4 +1,4 @@
-package com.xtruong.scanner.ui.barcode;
+package com.xtruong.scanner.ui.codereader;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,22 +10,36 @@ import android.widget.Toast;
 
 import com.google.android.gms.vision.barcode.Barcode;
 import com.xtruong.scanner.R;
+import com.xtruong.scanner.di.component.ActivityComponent;
+import com.xtruong.scanner.ui.base.BaseFragment;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import butterknife.ButterKnife;
 import info.androidhive.barcode.BarcodeReader;
 
 /**
  * Created by truongtx on 8/10/2019
  */
-public class BarcodeFragment extends Fragment implements BarcodeReader.BarcodeReaderListener {
+public class BarcodeFragment extends BaseFragment
+        implements BarcodeReader.BarcodeReaderListener, IBarcodeView {
+
     private static final String TAG = BarcodeFragment.class.getSimpleName();
 
     private BarcodeReader barcodeReader;
 
-    public BarcodeFragment() {
-        // Required empty public constructor
+    @Inject
+    IBarcodePresenter<IBarcodeView> mPresenter;
+
+    public static BarcodeFragment newInstance() {
+        Bundle args = new Bundle();
+        BarcodeFragment fragment = new BarcodeFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -35,23 +49,48 @@ public class BarcodeFragment extends Fragment implements BarcodeReader.BarcodeRe
         }
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_barcode, container, false);
 
-        barcodeReader = (BarcodeReader) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
-        barcodeReader.setListener(this);
+        ActivityComponent component = getActivityComponent();
+
+        if (component != null) {
+            component.inject(this);
+            setUnBinder(ButterKnife.bind(this, view));
+
+            barcodeReader = (BarcodeReader) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
+            barcodeReader.setListener(this);
+
+            mPresenter.onAttach(this);
+        }
 
         return view;
+    }
+
+    @Override
+    protected void setUp(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.onDetach();
+        super.onDestroyView();
     }
 
     @Override
     public void onScanned(final Barcode barcode) {
         Log.e(TAG, "onScanned: " + barcode.displayValue);
         barcodeReader.playBeep();
-
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -80,7 +119,6 @@ public class BarcodeFragment extends Fragment implements BarcodeReader.BarcodeRe
 
     @Override
     public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
-
     }
 
     @Override

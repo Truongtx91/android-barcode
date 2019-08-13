@@ -14,9 +14,9 @@
         android:layout_marginBottom="10dp" >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rName"
             android:hint="@string/hint_name"
             android:inputType="textPersonName"
             android:padding="20dp"/>
@@ -30,9 +30,9 @@
         android:layout_marginBottom="10dp" >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rEditEmail"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:padding="20dp"/>
@@ -47,9 +47,9 @@
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rEditPassword"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:padding="20dp"/>

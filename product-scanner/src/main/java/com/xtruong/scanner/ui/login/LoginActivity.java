@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.xtruong.scanner.R;
 import com.xtruong.scanner.ui.base.BaseActivity;
 import com.xtruong.scanner.ui.main.MainActivity;
+import com.xtruong.scanner.ui.register.RegisterActivity;
 import com.xtruong.scanner.utils.Functions;
 
 import javax.inject.Inject;
@@ -24,7 +25,6 @@ import androidx.appcompat.app.AlertDialog;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 
 /**
@@ -69,12 +69,12 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 
     @OnClick(R.id.btnRegister)
     void onRegister(View v){
-        //openRegisterActivity();
+        mPresenter.onRegisterClick();
     }
 
     @OnClick(R.id.btnForgotPassword)
     void onForgotPassword(View v){
-        //openForgotPasswordDialog();
+        mPresenter.onForgotPassword();
     }
 
     @Override
@@ -170,5 +170,8 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     private void resetPassword(final String email){
         //TODO
     }
+
+    @Override
+    protected void setUp(){}
 
 }

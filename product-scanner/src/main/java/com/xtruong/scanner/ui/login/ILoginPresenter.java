@@ -11,4 +11,7 @@ public interface ILoginPresenter<V extends  ILoginView> extends IPresenter<V> {
 
     void onLoginClick(String email, String password);
 
+    void onRegisterClick();
+
+    void onForgotPassword();
 }

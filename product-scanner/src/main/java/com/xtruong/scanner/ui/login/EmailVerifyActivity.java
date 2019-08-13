@@ -18,10 +18,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.xtruong.scanner.R;
-import com.xtruong.scanner.ScannerApp;
 import com.xtruong.scanner.data.DatabaseHandler;
 import com.xtruong.scanner.data.SessionManager;
-import com.xtruong.scanner.ui.barcode.BarcodeActivity;
+import com.xtruong.scanner.ui.codereader.BarcodeActivity;
 import com.xtruong.scanner.utils.AppConfig;
 import com.xtruong.scanner.utils.Functions;
 

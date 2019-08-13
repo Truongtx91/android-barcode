@@ -41,8 +41,6 @@ public abstract class BaseActivity extends AppCompatActivity
 
     private Unbinder mUnBinder;
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
 
@@ -169,6 +167,8 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
+
+    protected abstract void setUp();
 
 }
 
