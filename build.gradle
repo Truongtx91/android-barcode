@@ -66,4 +66,11 @@ ext{
     //font
     calligraphyVersion = '2.2.0'
 
+    // mqtt service;
+    clientVersion = '1.1.0'
+    mavenUrl = "https://repo.eclipse.org/content/repositories/paho-releases/"
+    serviceArchivesBaseName = 'org.eclipse.paho.android.service'
+    serviceVersion = '1.1.1'
+    supportLibVersion = '24.2.1'
+
 }

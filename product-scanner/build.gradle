@@ -3,25 +3,26 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.xtruong.scanner"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
 
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.0.100\"")
             buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
         }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.0.100\"")
             buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
         }
     }
@@ -64,6 +65,12 @@ dependencies {
 
     // font
     implementation "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
+
+    // mqttSevice
+    implementation "org.eclipse.paho:org.eclipse.paho.client.mqttv3:$rootProject.clientVersion"
+    implementation (project(':org.eclipse.paho.android.service')){
+        transitive=true
+    }
 }
 
 greendao {

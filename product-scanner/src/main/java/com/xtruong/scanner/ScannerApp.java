@@ -1,6 +1,7 @@
 package com.xtruong.scanner;
 
 import android.app.Application;
+import android.content.res.Configuration;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.interceptors.HttpLoggingInterceptor;
@@ -9,6 +10,8 @@ import com.xtruong.scanner.di.component.ApplicationComponent;
 import com.xtruong.scanner.di.component.DaggerApplicationComponent;
 import com.xtruong.scanner.di.module.ApplicationModule;
 import com.xtruong.scanner.utils.AppLogger;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -28,6 +31,8 @@ public class ScannerApp extends Application {
 
         super.onCreate();
 
+        setLanguage("default");
+
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();
 
@@ -40,6 +45,13 @@ public class ScannerApp extends Application {
             AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BODY);
         }
 
+    }
+
+    private void setLanguage(String language){
+        Locale locale = new Locale(language);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
     public ApplicationComponent getComponent() {

@@ -34,6 +34,9 @@ import com.xtruong.scanner.ui.payment.report.ReportPresenter;
 import com.xtruong.scanner.ui.register.IRegisterPresenter;
 import com.xtruong.scanner.ui.register.IRegisterView;
 import com.xtruong.scanner.ui.register.RegisterPresenter;
+import com.xtruong.scanner.ui.splash.ISplashPresenter;
+import com.xtruong.scanner.ui.splash.ISplashView;
+import com.xtruong.scanner.ui.splash.SplashPresenter;
 import com.xtruong.scanner.utils.rx.AppSchedulerProvider;
 import com.xtruong.scanner.utils.rx.ISchedulerProvider;
 
@@ -151,7 +154,10 @@ public class ActivityModule {
         return presenter;
     }
 
-
+    @Provides
+    ISplashPresenter<ISplashView> provideSplashPresenter(SplashPresenter<ISplashView> presenter){
+        return presenter;
+    }
 
 
 

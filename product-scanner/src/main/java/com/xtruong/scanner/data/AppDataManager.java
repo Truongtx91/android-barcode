@@ -57,20 +57,14 @@ public class AppDataManager implements IDataManager {
         updateUserInfo(
                 null,
                 null,
-                IDataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT,
-                null,
-                null,
-                null);
+                IDataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT);
     }
 
     @Override
-    public void updateUserInfo(String accessToken, Long userId, LoggedInMode loggedInMode, String userName, String email, String profilePicPath) {
+    public void updateUserInfo(String accessToken, Long userId, LoggedInMode loggedInMode) {
         setAccessToken(accessToken);
         setCurrentUserId(userId);
         setCurrentUserLoggedInMode(loggedInMode);
-        setCurrentUserName(userName);
-        setCurrentUserEmail(email);
-        setCurrentUserProfilePicUrl(profilePicPath);
 
         updateApiHeader(userId, accessToken);
     }

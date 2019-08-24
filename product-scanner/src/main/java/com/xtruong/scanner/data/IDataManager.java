@@ -18,10 +18,7 @@ public interface IDataManager extends IPreferencesHelper, IDbHelper, IApiHelper 
     void updateUserInfo(
             String accessToken,
             Long userId,
-            LoggedInMode loggedInMode,
-            String userName,
-            String email,
-            String profilePicPath);
+            LoggedInMode loggedInMode);
 
     enum LoggedInMode {
 

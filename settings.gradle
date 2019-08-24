@@ -1,1 +1,2 @@
-include ':product-scanner',':barcode-reader'
+include ':product-scanner',':barcode-reader', ':org.eclipse.paho.android.service'
+project(':org.eclipse.paho.android.service').projectDir = new File('org.eclipse.paho.android.service')

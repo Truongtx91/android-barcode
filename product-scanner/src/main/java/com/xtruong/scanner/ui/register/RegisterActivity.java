@@ -18,7 +18,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.xtruong.scanner.R;
 import com.xtruong.scanner.ui.base.BaseActivity;
-import com.xtruong.scanner.ui.login.EmailVerifyActivity;
 import com.xtruong.scanner.ui.login.LoginActivity;
 import com.xtruong.scanner.utils.AppConfig;
 import com.xtruong.scanner.utils.Functions;

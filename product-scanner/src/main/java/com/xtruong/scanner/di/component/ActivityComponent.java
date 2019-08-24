@@ -11,6 +11,7 @@ import com.xtruong.scanner.ui.payment.PaymentActivity;
 import com.xtruong.scanner.ui.payment.barcode.BarcodeFragment;
 import com.xtruong.scanner.ui.payment.report.ReportFragment;
 import com.xtruong.scanner.ui.register.RegisterActivity;
+import com.xtruong.scanner.ui.splash.SplashActivity;
 
 import dagger.Component;
 
@@ -38,4 +39,6 @@ public interface ActivityComponent {
     void inject(PaymentActivity paymentActivity);
 
     void inject(PasswordDialog passwordDialog);
+
+    void inject(SplashActivity splashActivity);
 }
