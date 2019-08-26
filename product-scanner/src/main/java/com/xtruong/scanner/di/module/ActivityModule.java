@@ -27,6 +27,9 @@ import com.xtruong.scanner.ui.payment.barcode.BarcodeAdapter;
 import com.xtruong.scanner.ui.payment.barcode.BarcodePresenter;
 import com.xtruong.scanner.ui.payment.barcode.IBarcodePresenter;
 import com.xtruong.scanner.ui.payment.barcode.IBarcodeView;
+import com.xtruong.scanner.ui.payment.barcode.product.IProductPresenter;
+import com.xtruong.scanner.ui.payment.barcode.product.IProductView;
+import com.xtruong.scanner.ui.payment.barcode.product.ProductPresenter;
 import com.xtruong.scanner.ui.payment.report.IReportPresenter;
 import com.xtruong.scanner.ui.payment.report.IReportView;
 import com.xtruong.scanner.ui.payment.report.ReportAdapter;
@@ -159,6 +162,9 @@ public class ActivityModule {
         return presenter;
     }
 
-
+    @Provides
+    IProductPresenter<IProductView> provideProductPresenter(ProductPresenter<IProductView> presenter){
+        return presenter;
+    }
 
 }

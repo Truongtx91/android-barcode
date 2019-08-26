@@ -9,6 +9,7 @@ import com.xtruong.scanner.ui.main.password.PasswordDialog;
 import com.xtruong.scanner.ui.main.rating.RatingDialog;
 import com.xtruong.scanner.ui.payment.PaymentActivity;
 import com.xtruong.scanner.ui.payment.barcode.BarcodeFragment;
+import com.xtruong.scanner.ui.payment.barcode.product.ProductDialog;
 import com.xtruong.scanner.ui.payment.report.ReportFragment;
 import com.xtruong.scanner.ui.register.RegisterActivity;
 import com.xtruong.scanner.ui.splash.SplashActivity;
@@ -41,4 +42,6 @@ public interface ActivityComponent {
     void inject(PasswordDialog passwordDialog);
 
     void inject(SplashActivity splashActivity);
+
+    void inject(ProductDialog productDialog);
 }

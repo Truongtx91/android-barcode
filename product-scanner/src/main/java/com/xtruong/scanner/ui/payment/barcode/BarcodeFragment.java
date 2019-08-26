@@ -11,6 +11,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.xtruong.scanner.R;
 import com.xtruong.scanner.di.component.ActivityComponent;
 import com.xtruong.scanner.ui.base.BaseFragment;
+import com.xtruong.scanner.ui.payment.barcode.product.ProductDialog;
 
 import java.util.List;
 
@@ -75,6 +76,9 @@ public class BarcodeFragment extends BaseFragment implements
     @Override
     public void onScanned(final Barcode barcode) {
         barcodeReader.playBeep();
+
+        ProductDialog.newInstance().show(getActivity().getSupportFragmentManager());
+
 
         getActivity().runOnUiThread(new Runnable() {
             @Override

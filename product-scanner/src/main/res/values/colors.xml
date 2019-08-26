@@ -33,4 +33,8 @@
     <color name="blue_grey_light">#A5B4C8</color>
     <color name="orange">#FFA500</color>
     <color name="yellow">#fff44f</color>
+
+    <!--Scan barcode-->
+    <color name="colorAccentSecondary">#ad1a7f</color>
+    <color name="lbl_value">#222222</color>
 </resources>
