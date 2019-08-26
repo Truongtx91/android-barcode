@@ -71,8 +71,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
+        app:headerLayout="@layout/drawer_header"
         app:menu="@menu/main_drawer">
+
         <TextView
             android:id="@+id/tv_app_version"
             style="@style/TextStyle.Title.Sub"

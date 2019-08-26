@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.xtruong.scanner.BuildConfig;
 import com.xtruong.scanner.R;
@@ -18,6 +19,9 @@ import com.xtruong.scanner.ui.base.BaseActivity;
 import com.xtruong.scanner.ui.login.LoginActivity;
 import com.xtruong.scanner.ui.main.password.PasswordDialog;
 import com.xtruong.scanner.ui.main.rating.RatingDialog;
+import com.xtruong.scanner.ui.nav.dashboard.DashboardFragment;
+import com.xtruong.scanner.ui.nav.home.HomeFragment;
+import com.xtruong.scanner.ui.nav.notification.NotificationFragment;
 import com.xtruong.scanner.ui.payment.PaymentActivity;
 
 import javax.inject.Inject;
@@ -29,6 +33,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -52,6 +58,11 @@ public class MainActivity extends BaseActivity implements  IMainView {
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
+    @BindView(R.id.navigation)
+    BottomNavigationView mBottomNavView;
+
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
 
     private TextView mNameTextView;
 
@@ -204,7 +215,12 @@ public class MainActivity extends BaseActivity implements  IMainView {
     @Override
     protected void setUp() {
 
+        FragmentPageAdapter adapter = new FragmentPageAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(new FragmentPageAdapter(getSupportFragmentManager()));
+        mViewPager.setOffscreenPageLimit(adapter.getCount() - 1);
+
         setSupportActionBar(mToolbar);
+        mBottomNavView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -235,16 +251,39 @@ public class MainActivity extends BaseActivity implements  IMainView {
         mPresenter.onViewInitialized();
     }
 
+
     private void setupBarCodeContainerView() {
         // TODO
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            mToolbar.setTitle(item.getTitle());
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    mViewPager.setCurrentItem(0);
+                    return true;
+                case R.id.navigation_dashboard:
+                    mViewPager.setCurrentItem(1);
+                    return true;
+                case R.id.navigation_notifications:
+                    mViewPager.setCurrentItem(2);
+                    return true;
+            }
+            return false;
+        }
+    };
+
     private void setupNavMenu() {
+
         View headerLayout = mNavigationView.getHeaderView(0);
 
-        mProfileImageView = (RoundedImageView) headerLayout.findViewById(R.id.iv_profile_pic);
-        mNameTextView = (TextView) headerLayout.findViewById(R.id.tv_name);
-        mEmailTextView = (TextView) headerLayout.findViewById(R.id.tv_email);
+        mProfileImageView = headerLayout.findViewById(R.id.iv_profile_pic);
+        mNameTextView =  headerLayout.findViewById(R.id.tv_name);
+        mEmailTextView = headerLayout.findViewById(R.id.tv_email);
 
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -303,4 +342,28 @@ public class MainActivity extends BaseActivity implements  IMainView {
     public void showChangePasswordDialog(){
         PasswordDialog.newInstance().show(getSupportFragmentManager());
     }
+
+    private static class FragmentPageAdapter extends FragmentPagerAdapter {
+
+        public FragmentPageAdapter(FragmentManager fm) {
+            super(fm);
+        }
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return HomeFragment.newInstance();
+                case 1:
+                    return DashboardFragment.newInstance();
+                case 2:
+                    return NotificationFragment.newInstance();
+            }
+            return null;
+        }
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
+
 }
