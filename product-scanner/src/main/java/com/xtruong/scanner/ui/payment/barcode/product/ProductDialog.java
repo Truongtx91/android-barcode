@@ -55,6 +55,22 @@ public class ProductDialog extends BaseDialog implements IProductView {
     }
 
     @Override
+    public void disableBuyButton(){
+        //TODO
+    }
+
+
+    @Override
+    public void disableCancelButton(){
+        //TODO
+    }
+
+    @Override
+    public void dismissDialog(){
+        super.dismissDialog(TAG);
+    }
+
+    @Override
     protected void setUp(View view) {
 
     }

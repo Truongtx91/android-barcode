@@ -13,4 +13,8 @@
     <dimen name="lbl_directory">14dp</dimen>
     <dimen name="lbl_movie_name">28dp</dimen>
 
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+
 </resources>

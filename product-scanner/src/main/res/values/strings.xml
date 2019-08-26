@@ -66,7 +66,7 @@
     <string name="bar_code">Bar Code</string>
     <string name="report">Report</string>
 
-    //scan barcode
+    <!--product item-->
     <string name="buy_us">Buy</string>
     <string name="msg_no_product_found">No product found</string>
     <string name="buy">Buy</string>
@@ -76,5 +76,9 @@
     <string name="product_date">Date</string>
     <string name="product_number">Number</string>
 
+    <!--bottom navigation-->
 
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

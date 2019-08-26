@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements  IMainView {
     @BindView(R.id.drawer_view)
     DrawerLayout mDrawer;
 
-    @BindView(R.id.navigation_view)
+    @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
 

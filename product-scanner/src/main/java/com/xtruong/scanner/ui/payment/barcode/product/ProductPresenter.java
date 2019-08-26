@@ -31,6 +31,6 @@ public class ProductPresenter<V extends IProductView> extends BasePresenter<V>
 
     @Override
     public void onCancelClicked() {
-        //TODO
+        getMvpView().dismissDialog();
     }
 }
